@@ -1,0 +1,25 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="ashevelev-1" author="ashevelev">
+        <createTable tableName="person">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="person_id" type="BIGINT"/>
+            <column name="gender" type="VARCHAR"/>
+            <column name="full_name" type="VARCHAR"/>
+            <column name="description" type="VARCHAR"/>
+            <column name="gender_search" type="VARCHAR"/>
+        </createTable>
+        <createTable tableName="liked_person">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="main_id" type="BIGINT"/>
+            <column name="liked_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
