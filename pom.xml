@@ -18,6 +18,7 @@
     <modules>
         <module>pre-reform-translator</module>
         <module>prerevolutionary-tinder-server</module>
+		<module>prerevolutionary-tinder-tgbot-client</module>
     </modules>
 
     <name>prerevolutionary-tinder</name>
