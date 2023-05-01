@@ -50,7 +50,6 @@ public class PersonService {
      */
     public PersonDTO getPerson(Long userId) throws URISyntaxException {
         URI url = new URI(personsUrl + userId);
-      //  return new PersonDTO(new Person(1L, 5L, Sex.FEMALE,"Белорусских Софья Олеговна", new StringBuilder("Адрес для письма желающего со мной сойтись на кратком жизненном пути нашего человеческого организма в росте движения безпредельной вечности."), Sex.ALL, BotState.DEF, 1, 1, null));
 
         return restTemplateConfig.getRestTemplate().getForObject(url, PersonDTO.class);
     }

@@ -12,9 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import ru.liga.tgbot.cache.PersonCache;
 import ru.liga.tgbot.dto.PersonDTO;
 import ru.liga.tgbot.enums.Action;
-import ru.liga.tgbot.model.PreReformText;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -79,9 +79,8 @@ public class SenderPhoto {
      */
     private InputFile getInputFile(String text) throws URISyntaxException, IOException {
         //PreReformText preReformText = profileService.translateToOldSlavonic(text);
-        profileService.profileToPicture(/*preReformText.getText()*/text);
-        File file = new File(filePath);
-        return new InputFile(file);
+        ByteArrayOutputStream byteArrayOutputStream = profileService.profileToPicture(/*preReformText.getText()*/text);
+        return new InputFile(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()), "profile");
     }
 
     /**
