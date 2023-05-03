@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PreReformText implements Serializable {
+public class PreReformText implements Serializable { //todo не нашёл практического применения этого классу, лишь в неиспользуемом методе
     private String text;
 }

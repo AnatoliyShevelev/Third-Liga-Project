@@ -7,14 +7,14 @@ import ru.liga.translator.service.TranslateService;
 
 @RestController
 @RequestMapping("/translate")
-public class TranslateRestController {
+public class TranslateRestController { //todo в наименовании можно не указывать Rest если других нет - TranslateController
 
     @Autowired
     private TranslateService translateService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public String translate(@RequestBody String text) {
+    public String translate(@RequestBody String text) { //todo стоит возвращать ResponseEntity<String>
         return translateService.translate(text);
     }
 }

@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TextToPictureDTO {
+public class TextToPictureDTO { //todo обычно называют просто ..Dto, не капсом
     String text;
 }

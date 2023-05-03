@@ -24,9 +24,9 @@ public class HandlerMessage {
     @Autowired
     private SenderPhoto senderPhoto;
     @Autowired
-    private ProfileService profileService;
+    private ProfileService profileService; //todo не используется?
     @Autowired
-    private ButtonsMaker buttonsMaker;
+    private ButtonsMaker buttonsMaker; //todo не используется?
     @Autowired
     private PersonService personService;
     @Autowired
@@ -206,6 +206,7 @@ public class HandlerMessage {
      * @throws IOException
      * @throws URISyntaxException
      */
+    //todo не get.. Зачем исключения пробрасываются?
     private SendMessage getSendMessageQuestionTypeSearch(String messageText, Message message, Long userId, String reg) throws IOException, URISyntaxException {
         personCache.setNameAndDescription(messageText, userId, reg);
         personCache.setNewState(userId, BotState.SET_TYPE_SEARCH);
@@ -218,7 +219,7 @@ public class HandlerMessage {
      * @param message Объект входящего сообщения
      * @return Сообщение, готовое для отправки
      */
-    private SendMessage getSendMessageQuestionSex(Message message) {
+    private SendMessage getSendMessageQuestionSex(Message message) { //todo не get..
         personCache.addPersonCache(message.getChat().getId(), BotState.SET_SEX);
         return senderMessage.getSendMessageQuestionSex(message);
     }

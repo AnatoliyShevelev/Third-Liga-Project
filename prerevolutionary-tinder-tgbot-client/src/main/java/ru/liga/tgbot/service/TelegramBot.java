@@ -1,4 +1,4 @@
-package ru.liga.tgbot.service;
+package ru.liga.tgbot.service; //todo лучше переложить в отдельный пакет, например, telegram
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

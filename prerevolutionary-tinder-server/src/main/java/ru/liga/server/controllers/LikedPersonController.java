@@ -20,7 +20,7 @@ public class LikedPersonController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LikedPerson likePerson(@RequestBody LikedPerson likedPerson) {
+    public LikedPerson likePerson(@RequestBody LikedPerson likedPerson) {//todo стоит возвращать ResponseEntity<>
         return likedPersonService.likePerson(likedPerson);
     }
 }

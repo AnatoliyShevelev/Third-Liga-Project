@@ -1,4 +1,4 @@
-package ru.liga.server.person_model;
+package ru.liga.server.person_model;//todo в названиях пакетов обычно не используют _
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @RequiredArgsConstructor
 @Table(name = "LIKED_PERSON")
-public class LikedPerson {
+public class LikedPerson { //todo вместо отдельной сущности стоит сделать связь ManyToMany
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

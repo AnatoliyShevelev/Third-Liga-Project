@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@Data
-public class RestTemplateConfig {
+@Data //todo это избыточно
+public class RestTemplateConfig { //todo стоит создать бин и инжектить там, где это необходимо
     private RestTemplate restTemplate = new RestTemplate();
 }

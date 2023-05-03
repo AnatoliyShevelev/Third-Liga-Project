@@ -1,4 +1,4 @@
-package ru.liga.tgbot.config;
+package ru.liga.tgbot.config; //todo возможно стоит перенести в другой пакет, ведь это не конфиг
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import ru.liga.tgbot.service.TelegramBot;
 public class BotInitializer {
 
     @Autowired
-    TelegramBot bot;
+    TelegramBot bot; //todo private?
 
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {

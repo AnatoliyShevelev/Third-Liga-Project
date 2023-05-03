@@ -68,6 +68,7 @@ public class PersonService {
      */
     public List<Person> findAllSuitablePersons(Long personId) {
         int count = this.getSuitablePersonsCount(personId);
+        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
         Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
         return personRepository.findSuitablePersons(personId, pageable).getContent();
     }
@@ -81,6 +82,7 @@ public class PersonService {
      * @return Данные пользователя
      */
     public Person findSuitablePerson(Long personId, int page) {
+        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
         Pageable pageable = PageRequest.of(page - 1, 1, Sort.by("id").ascending());
         Page<Person> statePage = personRepository.findSuitablePersons(personId, pageable);
         Person person = statePage.getContent().get(0);
@@ -96,7 +98,7 @@ public class PersonService {
      * @param personId Идентификатор текущего пользователя
      * @return Количество польщователей
      */
-    public int getSuitablePersonsCount(Long personId) {
+    public int getSuitablePersonsCount(Long personId) { //todo это не getter, нужно переименовать
         int count = personRepository.getSuitablePersonsCount(personId);
 
         log.info("Suitable persons count: {}", count);
@@ -112,6 +114,7 @@ public class PersonService {
      */
     public List<PersonDto> findAllFavoritePersons(Long personId) {
         int count = this.getFavoritePersonsCount(personId);
+        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
         Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
         Person mainPerson = personRepository.findByPersonId(personId);
         return personMapper.createModelList(personRepository.findLikedPersons(personId, pageable).getContent(), mainPerson.getId());
@@ -126,6 +129,7 @@ public class PersonService {
      * @return Данные пользователя
      */
     public PersonDto findFavoritePerson(Long personId, int page) {
+        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
         Pageable pageable = PageRequest.of(page - 1, 1, Sort.by("id").ascending());
         Page<Person> statePage = personRepository.findLikedPersons(personId, pageable);
         Person mainPerson = personRepository.findByPersonId(personId);
@@ -138,7 +142,7 @@ public class PersonService {
      * @param personId Идентификатор текущего пользователя
      * @return Количество польщователей
      */
-    public int getFavoritePersonsCount(Long personId) {
+    public int getFavoritePersonsCount(Long personId) { //todo это не getter, нужно переименовать
         int count = personRepository.getLikedPersonsCount(personId);
 
         log.info("Suitable persons count: {}", count);

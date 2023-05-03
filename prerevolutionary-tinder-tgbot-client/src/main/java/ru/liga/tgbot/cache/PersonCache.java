@@ -14,11 +14,11 @@ import java.util.List;
 
 @Slf4j
 @Getter
-@ToString
+@ToString //todo это действительно нужно этому классу?
 @Component
 public class PersonCache {
-
-    private List<Person> persons = new ArrayList<>();
+    //todo по всему классу наименование методов get/set, нужно переименовать, потому что пол логике это не getter и не setter
+    private List<Person> persons = new ArrayList<>(); //todo final?
 
     /**
      * Добавление нового Person в кеш
@@ -44,6 +44,7 @@ public class PersonCache {
      * @param personDTO DTO из ответа сервиса
      */
     public void setPersonCache(Long userId, PersonDTO personDTO) {
+        //todo сделать маппер для таких целей - PersonDTO -> Person
         Person person = getUsersCurrentPerson(userId);
         person.setId(personDTO.getId());
         person.setName(personDTO.getFullName());

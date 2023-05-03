@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TranslationRulesMap {
-    public static final Map<String, String> I_RULE = new HashMap<>();
-    public static final Map<String, String> ER_RULE = new HashMap<>();
-    public static final Map<String, String> FITA_RULE = new HashMap<>();
-    public static final Map<String, String> YAT_RULE = new HashMap<>();
+    public static final Map<String, String> I_RULE = new HashMap<>(); //todo стоит сделать через регулярное выражение
+    public static final Map<String, String> ER_RULE = new HashMap<>(); //todo стоит сделать через регулярное выражение
+    public static final Map<String, String> FITA_RULE = new HashMap<>(); //todo данный набор лучше хранить в файле
+    public static final Map<String, String> YAT_RULE = new HashMap<>(); //todo данный набор лучше хранить в файле
 
     static {
         I_RULE.put("иа", "iа");

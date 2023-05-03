@@ -17,11 +17,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Service
-public class PersonService {
+public class PersonService { //todo разве это не адаптер для взаимодействия с сервером?
     @Value("${person.url}")
-    private String personsUrl;
+    private String personsUrl; //todo лучше перенести в конфиг
     @Value("${favorite.url}")
-    private String favoriteUrl;
+    private String favoriteUrl; //todo лучше перенести в конфиг
     @Autowired
     private RestTemplateConfig restTemplateConfig;
 
@@ -48,7 +48,7 @@ public class PersonService {
      * @return Полученный профиль
      * @throws URISyntaxException
      */
-    public PersonDTO getPerson(Long userId) throws URISyntaxException {
+    public PersonDTO getPerson(Long userId) throws URISyntaxException { //todo не get
         URI url = new URI(personsUrl + userId);
 
         return restTemplateConfig.getRestTemplate().getForObject(url, PersonDTO.class);
@@ -62,7 +62,7 @@ public class PersonService {
      * @return Полученный профиль
      * @throws URISyntaxException
      */
-    public PersonDTO getSuitablePerson(Long userId, int page) throws URISyntaxException {
+    public PersonDTO getSuitablePerson(Long userId, int page) throws URISyntaxException { //todo не get
         URI url = new URI(personsUrl + userId + "/suitable/" + page);
         return restTemplateConfig.getRestTemplate().getForObject(url, PersonDTO.class);
     }
@@ -75,7 +75,7 @@ public class PersonService {
      * @return Полученный профиль любимца
      * @throws URISyntaxException
      */
-    public PersonDTO getFavoritePerson(Long userId, int page) throws URISyntaxException {
+    public PersonDTO getFavoritePerson(Long userId, int page) throws URISyntaxException { //todo не get
         URI url = new URI(personsUrl + userId + "/favorite/" + page);
         return restTemplateConfig.getRestTemplate().getForObject(url, PersonDTO.class);
     }
@@ -87,7 +87,7 @@ public class PersonService {
      * @return Кол-во анкет
      * @throws URISyntaxException
      */
-    public Integer getCountSuitablePerson(Long userId) throws URISyntaxException {
+    public Integer getCountSuitablePerson(Long userId) throws URISyntaxException { //todo не get
         URI url = new URI(personsUrl + userId + "/suitable/count");
         return restTemplateConfig.getRestTemplate().getForObject(url, Integer.class);
     }
@@ -99,7 +99,7 @@ public class PersonService {
      * @return Кол-во анкет
      * @throws URISyntaxException
      */
-    public Integer getCountFavoritePerson(Long userId) throws URISyntaxException {
+    public Integer getCountFavoritePerson(Long userId) throws URISyntaxException { //todo не get
         URI url = new URI(personsUrl + userId + "/favorite/count");
         return restTemplateConfig.getRestTemplate().getForObject(url, Integer.class);
     }
@@ -123,7 +123,7 @@ public class PersonService {
      *
      * @return готовые хедеры
      */
-    private HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders() { //todo не get.. Дублирование метода, значит стоит вынести
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;

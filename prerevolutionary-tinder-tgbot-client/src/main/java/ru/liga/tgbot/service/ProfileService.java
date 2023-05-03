@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProfileService {
+public class ProfileService { //todo разве это не адаптер для взаимодействия с сервером?
     @Value("${translate.url}")
-    private String translateUrl;
+    private String translateUrl; //todo лучше перенести в конфиг
 //    @Value("${profileToPicture.url}")
 //    private String profileToPictureUrl;
-    @Value("${path.image}")
-    private String filePath;
+    @Value("${path.image}") //todo лучше перенести в конфиг
+    private String filePath; //todo жестко задан путь в пропертях, из ресурсов можно достать проще - getResource()
     @Autowired
     private RestTemplateConfig restTemplateConfig;
 
@@ -39,7 +39,7 @@ public class ProfileService {
      * @return Переведенный текст на старославянский
      * @throws URISyntaxException
      */
-    public PreReformText translateToOldSlavonic(String text) throws URISyntaxException {
+    public PreReformText translateToOldSlavonic(String text) throws URISyntaxException { //todo не используется?
         HttpHeaders headers = getHttpHeaders();
         URI url = new URI(translateUrl);
         PreReformText objEmp = new PreReformText(text);
@@ -54,7 +54,8 @@ public class ProfileService {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public ByteArrayOutputStream profileToPicture(String text) throws IOException {
+    //todo вышел довольно таки большой метод с магическими значениями
+    public ByteArrayOutputStream profileToPicture(String text) throws IOException { //todo исключение лучше обработать на месте
         File file = new File(filePath);
         BufferedImage image = ImageIO.read(file);
         Graphics2D g2d = image.createGraphics();
@@ -128,7 +129,7 @@ public class ProfileService {
         return byteArrayOutputStream;
     }
 
-    private HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders() { //todo не get.. Дублирование метода, значит стоит вынести
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;

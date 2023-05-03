@@ -16,7 +16,7 @@ public class Person {
     private Long personId;
     private Sex sex;
     private String name;
-    private StringBuilder description;
+    private StringBuilder description; //todo StringBuilder? странное решение для поля модели
     private Sex typeSearch;
     private BotState botState;
     private int pageCounter;

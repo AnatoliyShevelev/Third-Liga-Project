@@ -12,8 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/persons")
 @RequiredArgsConstructor
-public class PersonRestController {
-
+public class PersonRestController { //todo в наименовании можно не указывать Rest если других нет - TranslateController
+    //todo относится ко всем эндпоинтам - стоит возвращать ResponseEntity<>
     private final PersonService personService;
 
     /**
@@ -46,7 +46,7 @@ public class PersonRestController {
      */
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public void updatePerson(@RequestBody Person person) {
+    public void updatePerson(@RequestBody Person person) {//todo после update обычно возвращают обновлённую сущность
         personService.personSave(person);
     }
 
@@ -72,7 +72,7 @@ public class PersonRestController {
      */
     @GetMapping("/{personId}/suitable/{page}")
     @ResponseStatus(HttpStatus.OK)
-    public Person findSuitablePerson(@PathVariable Long personId, @PathVariable int page) {
+    public Person findSuitablePerson(@PathVariable Long personId, @PathVariable int page) { //todo Pageable
         return personService.findSuitablePerson(personId, page);
     }
 
@@ -84,7 +84,7 @@ public class PersonRestController {
      */
     @GetMapping("/{personId}/suitable/count")
     @ResponseStatus(HttpStatus.OK)
-    public int getSuitablePersonsCount(@PathVariable Long personId) {
+    public int getSuitablePersonsCount(@PathVariable Long personId) { //todo наименование get подходит только для getters
         return personService.getSuitablePersonsCount(personId);
     }
 
@@ -122,7 +122,7 @@ public class PersonRestController {
      */
     @GetMapping("/{personId}/favorite/count")
     @ResponseStatus(HttpStatus.OK)
-    public int getFavoritePersonsCount(@PathVariable Long personId) {
+    public int getFavoritePersonsCount(@PathVariable Long personId) { //todo наименование get подходит только для getters
         return personService.getFavoritePersonsCount(personId);
     }
 

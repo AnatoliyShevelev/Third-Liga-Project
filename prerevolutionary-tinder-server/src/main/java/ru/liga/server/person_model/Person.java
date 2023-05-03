@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Table(name = "PERSON")
+@Table(name = "PERSON") //todo почему тут капсом?
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

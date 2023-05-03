@@ -15,7 +15,7 @@ public class SenderMessage {
     @Autowired
     private ButtonsMaker buttonsMaker;
     @Autowired
-    private PersonCache personCache;
+    private PersonCache personCache; //todo не используется?
 
     /**
      * Сообщение для вопроса пола
@@ -23,7 +23,7 @@ public class SenderMessage {
      * @param message Входящее сообщение
      * @return Сообщение, готовое для отправки
      */
-    public SendMessage getSendMessageQuestionSex(Message message) {
+    public SendMessage getSendMessageQuestionSex(Message message) { //todo не get..
         List<List<InlineKeyboardButton>> buttons = buttonsMaker.createButtonsForQuestionSex();
         return SendMessage.builder()
                 .chatId(message.getChatId().toString())
@@ -38,7 +38,7 @@ public class SenderMessage {
      * @param message Входящее сообщение
      * @return Сообщение, готовое для отправки
      */
-    public SendMessage getSendMessageQuestionTypeSearch(Message message) {
+    public SendMessage getSendMessageQuestionTypeSearch(Message message) { //todo не get..
         List<List<InlineKeyboardButton>> buttons = buttonsMaker.createButtonsForQuestionTypeSearch();
         return SendMessage.builder()
                 .chatId(message.getChatId().toString())
@@ -53,7 +53,7 @@ public class SenderMessage {
      * @param sex    выбранный пол
      * @return Сообщение, готовое для отправки
      */
-    public SendMessage getSendSuccessSetSex(String chatId, String sex) {
+    public SendMessage getSendSuccessSetSex(String chatId, String sex) { //todo не get..
         return SendMessage.builder().chatId(chatId).text("Поздравляю, " + sex + ", теперь введите описание").build();
     }
 
@@ -64,7 +64,7 @@ public class SenderMessage {
      * @param text   текст сообщения
      * @return Сообщение, готовое для отправки
      */
-    public SendMessage getSendMessage(String chatId, String text) {
+    public SendMessage getSendMessage(String chatId, String text) { //todo не get..
         return SendMessage.builder().chatId(chatId).text(text).build();
     }
 }

@@ -28,7 +28,7 @@ public class SenderPhoto {
     @Autowired
     private ButtonsMaker buttonsMaker;
     @Value("${path.image}")
-    private String filePath;
+    private String filePath; //todo лучше перенести в конфиг, да и нужен ли он тут?
 
 
     /**
@@ -40,6 +40,7 @@ public class SenderPhoto {
      * @throws IOException
      * @throws URISyntaxException
      */
+    //todo не get.. Слишком далеко тянутся исключения стоит обработать на месте
     public SendPhoto getMyProfile(Message message, String filePath) throws IOException, URISyntaxException {
         List<List<InlineKeyboardButton>> buttons = buttonsMaker.createButtonsForGetMyProfile();
         InputFile inputFile = getInputFile(filePath);
@@ -59,6 +60,7 @@ public class SenderPhoto {
      * @throws IOException
      * @throws URISyntaxException
      */
+    //todo не get.. Слишком далеко тянутся исключения стоит обработать на месте
     public SendPhoto getProfile(Message message, PersonDTO personDTO) throws IOException, URISyntaxException {
         ReplyKeyboardMarkup keyboardMarkup = buttonsMaker.createButtonsForGetProfile();
         InputFile inputFile = getInputFile(getProfileText(personDTO));
@@ -77,6 +79,7 @@ public class SenderPhoto {
      * @throws URISyntaxException
      * @throws IOException
      */
+    //todo не get.. Слишком далеко тянутся исключения стоит обработать на месте
     private InputFile getInputFile(String text) throws URISyntaxException, IOException {
         //PreReformText preReformText = profileService.translateToOldSlavonic(text);
         ByteArrayOutputStream byteArrayOutputStream = profileService.profileToPicture(/*preReformText.getText()*/text);
@@ -89,7 +92,7 @@ public class SenderPhoto {
      * @param personDTO Профиль
      * @return готовый текст для профиля
      */
-    private String getProfileText(PersonDTO personDTO) {
+    private String getProfileText(PersonDTO personDTO) {//todo не get..
         if (personDTO.getStatus() != null) {
             return personDTO.getFullName() + " - " + Action.valueOf(personDTO.getStatus()).getCaption() + "\n" + personDTO.getDescription();
         } else {

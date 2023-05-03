@@ -10,7 +10,7 @@ import ru.liga.tgbot.model.Person;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PersonDTO {
+public class PersonDTO { //todo обычно называют просто ..Dto, не капсом
 
     private Long id;
     private String gender;
@@ -20,7 +20,7 @@ public class PersonDTO {
     private String genderSearch;
     private String status;
 
-    public PersonDTO(Person person) {
+    public PersonDTO(Person person) { //todo это должно быть в mapper
         this.id = person.getId();
         this.gender = person.getSex().toString();
         this.personId = person.getPersonId();

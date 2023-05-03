@@ -23,7 +23,7 @@ public class HandlerCallback {
     @Autowired
     private PersonService personService;
     @Autowired
-    private ProfileService profileService;
+    private ProfileService profileService; //todo не используется?
     @Autowired
     private SenderPhoto senderPhoto;
     @Autowired
@@ -36,7 +36,7 @@ public class HandlerCallback {
      * @return Итоговое сообщение
      * @throws URISyntaxException
      */
-    public SendMessage answerCallback(CallbackQuery callbackQuery) throws URISyntaxException {
+    public SendMessage answerCallback(CallbackQuery callbackQuery) throws URISyntaxException { //todo исключение?
 
         Message message = callbackQuery.getMessage();
         String[] param = callbackQuery.getData().split(":");
@@ -127,10 +127,11 @@ public class HandlerCallback {
      * @throws URISyntaxException
      * @throws IOException
      */
+    //todo не set..
     private SendPhoto setTypeSearch(Message message, String typeSearch, Long userId) throws URISyntaxException, IOException {
         personCache.setNewState(userId, BotState.PROFILE_DONE);
         personCache.setTypeSearch(userId, Sex.valueOf(typeSearch));
-        personService.createPerson(personCache.getUsersCurrentPerson(userId));
+        personService.createPerson(personCache.getUsersCurrentPerson(userId)); //todo а для чего, если полученный объект не используется?
         String text = personCache.getNameAndDescription(userId);
         return senderPhoto.getMyProfile(message, text);
     }
@@ -141,6 +142,7 @@ public class HandlerCallback {
      * @param userId       Id текущего пользователя из Телеграмма
      * @param pagesCounter Кол-во страниц
      */
+    //todo не set..
     private void setPagesCache(Long userId, int pagesCounter) {
         personCache.setPages(userId, pagesCounter);
         personCache.resetPagesCounter(userId);
