@@ -13,24 +13,24 @@ import javax.persistence.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Table(name = "PERSON") //todo почему тут капсом?
+@Table(name = "person") //DONE todo почему тут капсом?
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "GENDER")
+    @Column(name = "gender")
     private String gender;
 
-    @Column(name = "PERSON_ID")
+    @Column(name = "person_id")
     private Long personId;
 
-    @Column(name = "FULL_NAME")
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "GENDER_SEARCH")
+    @Column(name = "gender_search")
     private String genderSearch;
 }

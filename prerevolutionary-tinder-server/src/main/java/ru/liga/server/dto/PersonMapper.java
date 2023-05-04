@@ -33,7 +33,7 @@ public class PersonMapper { //todo предполагается, что в ма�
         personDto.setGender(likedPerson.getGender());
         personDto.setGenderSearch(likedPerson.getGenderSearch());
         personDto.setDescription(likedPerson.getDescription());
-        personDto.setStatus(getLikedPersonStatus(mainPersonId, likedPerson.getId()));
+        personDto.setStatus(showLikedPersonStatus(mainPersonId, likedPerson.getId()));
 
         log.info("Created person dto: {}", personDto);
 
@@ -64,9 +64,9 @@ public class PersonMapper { //todo предполагается, что в ма�
      * @param likedPersonId Идентификатор связанного пользователя
      * @return Статус связи между пользователями
      */
-    private String getLikedPersonStatus(Long mainPersonId, Long likedPersonId) { //todo не get
-        LikedPerson likePerson = likedPersonRepository.getByMainIdAndLikedId(mainPersonId, likedPersonId);
-        LikedPerson likedMePerson = likedPersonRepository.getByMainIdAndLikedId(likedPersonId, mainPersonId);
+    private String showLikedPersonStatus(Long mainPersonId, Long likedPersonId) { //DONE todo не get
+        LikedPerson likePerson = likedPersonRepository.findByMainIdAndLikedId(mainPersonId, likedPersonId);
+        LikedPerson likedMePerson = likedPersonRepository.findByMainIdAndLikedId(likedPersonId, mainPersonId);
 
         if (likePerson != null && likedMePerson != null) {
             return "MATCH";

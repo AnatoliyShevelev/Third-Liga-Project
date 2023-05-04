@@ -13,16 +13,16 @@ import javax.persistence.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Table(name = "LIKED_PERSON")
+@Table(name = "liked_person")
 public class LikedPerson { //todo вместо отдельной сущности стоит сделать связь ManyToMany
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "MAIN_ID")
+    @Column(name = "main_id")
     private Long mainId;
 
-    @Column(name = "LIKED_ID")
+    @Column(name = "liked_id")
     private Long likedId;
 
     public LikedPerson(Long mainId, Long likedId) {

@@ -22,7 +22,7 @@ public class LikedPersonService {
         Long mainId = personRepository.findByPersonId(likedPerson.getMainId()).getId();
         Long likedId = personRepository.findByPersonId(likedPerson.getLikedId()).getId();
 
-        LikedPerson likedPersonExists = likedPersonRepository.getByMainIdAndLikedId(mainId, likedId);
+        LikedPerson likedPersonExists = likedPersonRepository.findByMainIdAndLikedId(mainId, likedId);
         if (likedPersonExists == null) {
             likedPerson.setMainId(mainId);
             likedPerson.setLikedId(likedId);

@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/persons")
 @RequiredArgsConstructor
-public class PersonRestController { //todo в наименовании можно не указывать Rest если других нет - TranslateController
+public class TranslateController { //DONE todo в наименовании можно не указывать Rest если других нет - TranslateController
     //todo относится ко всем эндпоинтам - стоит возвращать ResponseEntity<>
     private final PersonService personService;
 
@@ -84,7 +84,7 @@ public class PersonRestController { //todo в наименовании можн�
      */
     @GetMapping("/{personId}/suitable/count")
     @ResponseStatus(HttpStatus.OK)
-    public int getSuitablePersonsCount(@PathVariable Long personId) { //todo наименование get подходит только для getters
+    public int findSuitablePersonsCount(@PathVariable Long personId) { //DONE todo наименование get подходит только для getters
         return personService.getSuitablePersonsCount(personId);
     }
 
@@ -122,7 +122,7 @@ public class PersonRestController { //todo в наименовании можн�
      */
     @GetMapping("/{personId}/favorite/count")
     @ResponseStatus(HttpStatus.OK)
-    public int getFavoritePersonsCount(@PathVariable Long personId) { //todo наименование get подходит только для getters
+    public int findFavoritePersonsCount(@PathVariable Long personId) { //DONE todo наименование get подходит только для getters
         return personService.getFavoritePersonsCount(personId);
     }
 

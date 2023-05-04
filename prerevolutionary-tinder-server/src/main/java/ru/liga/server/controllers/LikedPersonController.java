@@ -12,6 +12,12 @@ import ru.liga.server.service.LikedPersonService;
 @RequiredArgsConstructor
 public class LikedPersonController {
     private final LikedPersonService likedPersonService;
+
+    /**
+     * Запрос на создание связи между пользователями
+     * @param likedPerson Данные о свзи пользователей
+     * @return Данные о связи пользователей
+     */
     @PostMapping
     public ResponseEntity<LikedPerson> likePerson(@RequestBody LikedPerson likedPerson) {//DONE todo стоит возвращать ResponseEntity<>
         LikedPerson createdLikedPerson = likedPersonService.likePerson(likedPerson);
