@@ -4,55 +4,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TranslationRulesMap {
-    public static final Map<String, String> I_RULE = new HashMap<>(); //todo стоит сделать через регулярное выражение
-    public static final Map<String, String> ER_RULE = new HashMap<>(); //todo стоит сделать через регулярное выражение
-    public static final Map<String, String> FITA_RULE = new HashMap<>(); //todo данный набор лучше хранить в файле
-    public static final Map<String, String> YAT_RULE = new HashMap<>(); //todo данный набор лучше хранить в файле
+    public static final Map<String, String> I_RULE = new HashMap<>(); //DONE todo стоит сделать через регулярное выражение
+    public static final Map<String, String> ER_RULE = new HashMap<>(); //DONE todo стоит сделать через регулярное выражение
+    public static final Map<String, String> FITA_RULE = new HashMap<>(); //в csv файле, через который хотел читать, не отображаются символы ѳ, поэтому оставил так todo данный набор лучше хранить в файле
+    public static final Map<String, String> YAT_RULE = new HashMap<>(); //в csv файле, через который хотел читать, не отображаются символы ѳ, поэтому оставил так todo данный набор лучше хранить в файле
+
 
     static {
-        I_RULE.put("иа", "iа");
-        I_RULE.put("ие", "iе");
-        I_RULE.put("иё", "iё");
-        I_RULE.put("ии", "iи");
-        I_RULE.put("ий", "iй");
-        I_RULE.put("ио", "iо");
-        I_RULE.put("иу", "iу");
-        I_RULE.put("иы", "iы");
-        I_RULE.put("иэ", "iэ");
-        I_RULE.put("ию", "iю");
-        I_RULE.put("ия", "iя");
-        I_RULE.put("Иа", "Iа");
-        I_RULE.put("Ие", "Iе");
-        I_RULE.put("Иё", "Iё");
-        I_RULE.put("Ии", "Iи");
-        I_RULE.put("Ий", "Iй");
-        I_RULE.put("Ио", "Iо");
-        I_RULE.put("Иу", "Iу");
-        I_RULE.put("Иы", "Iы");
-        I_RULE.put("Иэ", "Iэ");
-        I_RULE.put("Ию", "Iю");
-        I_RULE.put("Ия", "Iя");
 
-        ER_RULE.put("б\\b", "бъ");
-        ER_RULE.put("в\\b", "въ");
-        ER_RULE.put("г\\b", "гъ");
-        ER_RULE.put("д\\b", "дъ");
-        ER_RULE.put("ж\\b", "жъ");
-        ER_RULE.put("з\\b", "зъ");
-        ER_RULE.put("к\\b", "къ");
-        ER_RULE.put("л\\b", "лъ");
-        ER_RULE.put("м\\b", "мъ");
-        ER_RULE.put("н\\b", "нъ");
-        ER_RULE.put("п\\b", "пъ");
-        ER_RULE.put("р\\b", "ръ");
-        ER_RULE.put("с\\b", "съ");
-        ER_RULE.put("т\\b", "тъ");
-        ER_RULE.put("ф\\b", "фъ");
-        ER_RULE.put("х\\b", "хъ");
-        ER_RULE.put("ц\\b", "цъ");
-        ER_RULE.put("ч\\b", "чъ");
-        ER_RULE.put("ш\\b", "шъ");
-        ER_RULE.put("щ\\b", "щъ");
+        I_RULE.putAll(Map.ofEntries(
+                Map.entry("(?i)и([аеёиоуыэюя])", "i$1"),
+                Map.entry("(?i)И([аеёиоуыэюя])", "I$1")
+        ));
+        ER_RULE.put("\b(б|в|г|д|ж|з|к|л|м|н|п|р|с|т|ф|х|ц|ч|ш|щ)\b", "$1ъ");
+
 
         FITA_RULE.put("Агафь", "Агаѳь");
         FITA_RULE.put("Агафокл", "Агаѳокл");
