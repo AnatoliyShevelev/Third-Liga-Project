@@ -3,7 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
-    <changeSet id="yuzanudenko-2" author="yuzanudenko">
+    <changeSet id="ashevelev-2" author="ashevelev">
         <sql>
             insert into public.person
                 (gender, person_id, full_name, description, gender_search)
