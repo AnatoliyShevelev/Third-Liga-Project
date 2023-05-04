@@ -123,7 +123,7 @@ public class TranslateController { //DONE todo в наименовании мо�
     @GetMapping("/{personId}/favorite/count")
     @ResponseStatus(HttpStatus.OK)
     public int findFavoritePersonsCount(@PathVariable Long personId) { //DONE todo наименование get подходит только для getters
-        return personService.getFavoritePersonsCount(personId);
+        return personService.findFavoritePersonsCount(personId);
     }
 
     /**

@@ -6,6 +6,8 @@ import ru.liga.server.person_model.LikedPerson;
 import ru.liga.server.repository.LikedPersonRepository;
 import ru.liga.server.repository.PersonRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class LikedPersonService {
@@ -18,15 +20,15 @@ public class LikedPersonService {
      * @param likedPerson Данные о связи пользователей
      * @return Данные о связи пользователей
      */
-    public LikedPerson likePerson(LikedPerson likedPerson) {
+    public Optional<LikedPerson> likePerson(LikedPerson likedPerson) {
         Long mainId = personRepository.findByPersonId(likedPerson.getMainId()).getId();
         Long likedId = personRepository.findByPersonId(likedPerson.getLikedId()).getId();
 
-        LikedPerson likedPersonExists = likedPersonRepository.findByMainIdAndLikedId(mainId, likedId);
-        if (likedPersonExists == null) {
+        Optional<LikedPerson> likedPersonExists = likedPersonRepository.findByMainIdAndLikedId(mainId, likedId);
+        if (likedPersonExists.isEmpty()) {
             likedPerson.setMainId(mainId);
             likedPerson.setLikedId(likedId);
-            return likedPersonRepository.saveAndFlush(likedPerson);
+            return Optional.of(likedPersonRepository.saveAndFlush(likedPerson));
         }
 
         return likedPersonExists;

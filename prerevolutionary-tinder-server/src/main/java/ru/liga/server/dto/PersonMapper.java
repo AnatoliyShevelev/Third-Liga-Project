@@ -9,6 +9,7 @@ import ru.liga.server.repository.LikedPersonRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -65,12 +66,12 @@ public class PersonMapper { //todo предполагается, что в ма�
      * @return Статус связи между пользователями
      */
     private String showLikedPersonStatus(Long mainPersonId, Long likedPersonId) { //DONE todo не get
-        LikedPerson likePerson = likedPersonRepository.findByMainIdAndLikedId(mainPersonId, likedPersonId);
-        LikedPerson likedMePerson = likedPersonRepository.findByMainIdAndLikedId(likedPersonId, mainPersonId);
+        Optional<LikedPerson> likePerson = likedPersonRepository.findByMainIdAndLikedId(mainPersonId, likedPersonId);
+        Optional<LikedPerson> likedMePerson = likedPersonRepository.findByMainIdAndLikedId(likedPersonId, mainPersonId);
 
-        if (likePerson != null && likedMePerson != null) {
+        if (likePerson.isPresent() && likedMePerson.isPresent()) {
             return "MATCH";
-        } else if (likePerson != null) {
+        } else if (likePerson.isPresent()) {
             return "LIKE";
         } else {
             return "LIKED_ME";

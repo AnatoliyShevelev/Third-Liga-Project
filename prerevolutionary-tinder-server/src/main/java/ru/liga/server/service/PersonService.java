@@ -113,7 +113,7 @@ public class PersonService {
      * @return Список пользователей
      */
     public List<PersonDto> findAllFavoritePersons(Long personId) {
-        int count = this.getFavoritePersonsCount(personId);
+        int count = this.findFavoritePersonsCount(personId);
         //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
         Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
         Person mainPerson = personRepository.findByPersonId(personId);
@@ -142,7 +142,7 @@ public class PersonService {
      * @param personId Идентификатор текущего пользователя
      * @return Количество польщователей
      */
-    public int getFavoritePersonsCount(Long personId) { //todo это не getter, нужно переименовать
+    public int findFavoritePersonsCount(Long personId) { //DONE todo это не getter, нужно переименовать
         int count = personRepository.getLikedPersonsCount(personId);
 
         log.info("Suitable persons count: {}", count);
