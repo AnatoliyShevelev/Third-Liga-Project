@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.liga.server.dto.PersonDto;
 import ru.liga.server.dto.PersonMapper;
-import ru.liga.server.person_model.Person;
+import ru.liga.server.model.Person;
 import ru.liga.server.repository.PersonRepository;
 
 import java.util.List;
@@ -67,7 +67,7 @@ public class PersonService {
      * @return Список данных пользователей
      */
     public List<Person> findAllSuitablePersons(Long personId) {
-        int count = this.getSuitablePersonsCount(personId);
+        int count = this.findSuitablePersonsCount(personId);
         //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
         Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
         return personRepository.findSuitablePersons(personId, pageable).getContent();
@@ -98,7 +98,7 @@ public class PersonService {
      * @param personId Идентификатор текущего пользователя
      * @return Количество польщователей
      */
-    public int getSuitablePersonsCount(Long personId) { //todo это не getter, нужно переименовать
+    public int findSuitablePersonsCount(Long personId) { //DONE todo это не getter, нужно переименовать
         int count = personRepository.getSuitablePersonsCount(personId);
 
         log.info("Suitable persons count: {}", count);

@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import ru.liga.server.person_model.Person;
+import ru.liga.server.model.Person;
 
 public interface PersonRepository extends JpaRepository<Person, Long> {
     Person findByPersonId(Long personId);

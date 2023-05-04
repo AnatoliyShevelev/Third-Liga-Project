@@ -2,7 +2,7 @@ package ru.liga.server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.liga.server.person_model.LikedPerson;
+import ru.liga.server.model.LikedPerson;
 import ru.liga.server.repository.LikedPersonRepository;
 import ru.liga.server.repository.PersonRepository;
 

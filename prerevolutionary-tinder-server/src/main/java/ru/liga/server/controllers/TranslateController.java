@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.liga.server.dto.PersonDto;
-import ru.liga.server.person_model.Person;
+import ru.liga.server.model.Person;
 import ru.liga.server.service.PersonService;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class TranslateController { //DONE todo в наименовании мо�
     @GetMapping("/{personId}/suitable/count")
     @ResponseStatus(HttpStatus.OK)
     public int findSuitablePersonsCount(@PathVariable Long personId) { //DONE todo наименование get подходит только для getters
-        return personService.getSuitablePersonsCount(personId);
+        return personService.findSuitablePersonsCount(personId);
     }
 
     /**

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.liga.server.person_model.LikedPerson;
+import ru.liga.server.model.LikedPerson;
 import ru.liga.server.service.LikedPersonService;
 
 import java.util.Optional;

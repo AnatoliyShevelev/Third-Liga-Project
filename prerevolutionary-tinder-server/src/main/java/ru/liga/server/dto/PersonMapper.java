@@ -3,8 +3,8 @@ package ru.liga.server.dto; //todo мапперы в dto? Нужно держа�
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.liga.server.person_model.LikedPerson;
-import ru.liga.server.person_model.Person;
+import ru.liga.server.model.LikedPerson;
+import ru.liga.server.model.Person;
 import ru.liga.server.repository.LikedPersonRepository;
 
 import java.util.ArrayList;
