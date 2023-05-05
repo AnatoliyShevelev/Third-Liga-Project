@@ -1,4 +1,4 @@
-package ru.liga.tgbot.service; //todo лучше переложить в отдельный пакет, например, telegram
+package ru.liga.tgbot.telegram;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +9,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.liga.tgbot.cache.PersonCache;
 import ru.liga.tgbot.config.BotConfig;
+import ru.liga.tgbot.handler.HandlerCallback;
+import ru.liga.tgbot.handler.HandlerMessage;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

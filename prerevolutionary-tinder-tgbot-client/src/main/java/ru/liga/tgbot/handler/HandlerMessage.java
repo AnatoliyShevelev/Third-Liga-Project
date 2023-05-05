@@ -1,4 +1,4 @@
-package ru.liga.tgbot.service;
+package ru.liga.tgbot.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +8,12 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.liga.tgbot.cache.PersonCache;
-import ru.liga.tgbot.dto.PersonDTO;
+import ru.liga.tgbot.dto.PersonDto;
 import ru.liga.tgbot.enums.Action;
 import ru.liga.tgbot.enums.BotState;
+import ru.liga.tgbot.service.PersonAdapterService;
+import ru.liga.tgbot.service.SenderMessage;
+import ru.liga.tgbot.service.SenderPhoto;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -24,11 +27,7 @@ public class HandlerMessage {
     @Autowired
     private SenderPhoto senderPhoto;
     @Autowired
-    private ProfileService profileService; //todo не используется?
-    @Autowired
-    private ButtonsMaker buttonsMaker; //todo не используется?
-    @Autowired
-    private PersonService personService;
+    private PersonAdapterService personAdapterService;
     @Autowired
     private SenderMessage senderMessage;
 
@@ -37,10 +36,9 @@ public class HandlerMessage {
      *
      * @param update Объект Update
      * @return Сообщение, готовое для отправки
-     * @throws IOException
      * @throws URISyntaxException
      */
-    public SendMessage handleSendMessage(Update update) throws IOException, URISyntaxException {
+    public SendMessage handleSendMessage(Update update) throws URISyntaxException {
         String messageText = update.getMessage().getText();
         Message message = update.getMessage();
         Long userId = message.getFrom().getId();
@@ -52,16 +50,16 @@ public class HandlerMessage {
                 message.getText());
 
         if ("/start".equals(messageText)) {
-            PersonDTO person = personService.getPerson(userId);
+            PersonDto person = personAdapterService.findPerson(userId);
             if (!personCache.containsKey(userId) && person == null) {
-                return getSendMessageQuestionSex(message);
+                return receiveSendMessageQuestionSex(message);
             }
         }
         BotState botState = personCache.getUsersCurrentBotState(userId);
         if (botState.equals(BotState.SET_PROFILE_INFO)) {
             return setProfileInfo(messageText, message, userId);
         }
-        return senderMessage.getSendMessage(message.getChatId().toString(), "Команда не поддерживается. Попробуйте повторить еще раз.");
+        return senderMessage.sendTextMessage(message.getChatId().toString(), "Команда не поддерживается. Попробуйте повторить еще раз.");
     }
 
     /**
@@ -78,16 +76,16 @@ public class HandlerMessage {
         Long userId = message.getFrom().getId();
         BotState botState = personCache.getUsersCurrentBotState(userId);
         if (botState.equals(BotState.DEF)) {
-            PersonDTO person = personService.getPerson(userId);
+            PersonDto person = personAdapterService.findPerson(userId);
             if (person != null) {
-                personCache.setPersonCache(userId, person);
-                return senderPhoto.getMyProfile(message, person.getFullName() + " " + person.getDescription());
+                personCache.fillPersonCache(userId, person);
+                return senderPhoto.receiveMyProfile(message, person.getFullName() + " " + person.getDescription());
             }
         }
 
         if (botState.equals(BotState.SEARCH)) {
             if (messageText.equals(Action.RIGHT.getCaption())) {
-                personService.likePerson(userId, personCache.getLikedPersonId(userId));
+                personAdapterService.likePerson(userId, personCache.getLikedPersonId(userId));
                 return getNextLikedProfile(message, userId);
             }
             if (messageText.equals(Action.LEFT.getCaption())) {
@@ -119,19 +117,17 @@ public class HandlerMessage {
      * @param message     Объект входящего сообщения
      * @param userId      Id текущего пользователя из Телеграмма
      * @return Сообщение, готовое для отправки
-     * @throws IOException
-     * @throws URISyntaxException
      */
-    private SendMessage setProfileInfo(String messageText, Message message, Long userId) throws IOException, URISyntaxException {
+    private SendMessage setProfileInfo(String messageText, Message message, Long userId) {
         String[] inputDescrTypeFirst = messageText.split("\n");
         String[] inputDescrTypeSecond = messageText.split(" ");
         if (inputDescrTypeFirst.length > 1) {
-            return getSendMessageQuestionTypeSearch(messageText, message, userId, "\n");
+            return receiveSendMessageQuestionTypeSearch(messageText, message, userId, "\n");
         }
         if (inputDescrTypeSecond.length > 1) {
-            return getSendMessageQuestionTypeSearch(messageText, message, userId, " ");
+            return receiveSendMessageQuestionTypeSearch(messageText, message, userId, " ");
         } else {
-            return senderMessage.getSendMessage(message.getChatId().toString(),
+            return senderMessage.sendTextMessage(message.getChatId().toString(),
                     "Введите на первой строке - ваше имя, на второй строке описание!, либо все в одной строке!");
         }
     }
@@ -142,13 +138,11 @@ public class HandlerMessage {
      * @param message Объект входящего сообщения
      * @param userId  Id текущего пользователя из Телеграмма
      * @return Сообщение, готовое для отправки
-     * @throws IOException
-     * @throws URISyntaxException
      */
-    private SendPhoto getMenuAndProfileWithDescr(Message message, Long userId) throws IOException, URISyntaxException {
+    private SendPhoto getMenuAndProfileWithDescr(Message message, Long userId) {
         personCache.setNewState(userId, BotState.PROFILE_DONE);
         personCache.resetPagesCounter(userId);
-        return senderPhoto.getMyProfile(message, personCache.getNameAndDescription(userId));
+        return senderPhoto.receiveMyProfile(message, personCache.getNameAndDescription(userId));
     }
 
     /**
@@ -158,13 +152,12 @@ public class HandlerMessage {
      * @param userId  Id текущего пользователя из Телеграмма
      * @return Сообщение, готовое для отправки
      * @throws URISyntaxException
-     * @throws IOException
      */
-    private SendPhoto getNextLikedProfile(Message message, Long userId) throws URISyntaxException, IOException {
+    private SendPhoto getNextLikedProfile(Message message, Long userId) throws URISyntaxException {
         int pagesCounter = personCache.incrementPagesCounter(userId);
-        PersonDTO personDTO = personService.getSuitablePerson(userId, pagesCounter);
+        PersonDto personDTO = personAdapterService.findSuitablePerson(userId, pagesCounter);
         personCache.setLikedPersonId(userId, personDTO.getPersonId());
-        return senderPhoto.getProfile(message, personDTO);
+        return senderPhoto.receiveProfile(message, personDTO);
     }
 
     /**
@@ -174,11 +167,10 @@ public class HandlerMessage {
      * @param userId  Id текущего пользователя из Телеграмма
      * @return Сообщение, готовое для отправки
      * @throws URISyntaxException
-     * @throws IOException
      */
-    private SendPhoto getNextFavoriteProfile(Message message, Long userId) throws URISyntaxException, IOException {
+    private SendPhoto getNextFavoriteProfile(Message message, Long userId) throws URISyntaxException {
         int pagesCounter = personCache.incrementPagesCounter(userId);
-        return senderPhoto.getProfile(message, personService.getFavoritePerson(userId, pagesCounter));
+        return senderPhoto.receiveProfile(message, personAdapterService.findFavoritePerson(userId, pagesCounter));
     }
 
     /**
@@ -188,11 +180,10 @@ public class HandlerMessage {
      * @param userId  Id текущего пользователя из Телеграмма
      * @return Сообщение, готовое для отправки
      * @throws URISyntaxException
-     * @throws IOException
      */
-    private SendPhoto getPrevFavoriteProfile(Message message, Long userId) throws URISyntaxException, IOException {
+    private SendPhoto getPrevFavoriteProfile(Message message, Long userId) throws URISyntaxException {
         int pagesCounter = personCache.minusPagesCounter(userId);
-        return senderPhoto.getProfile(message, personService.getFavoritePerson(userId, pagesCounter));
+        return senderPhoto.receiveProfile(message, personAdapterService.findFavoritePerson(userId, pagesCounter));
     }
 
     /**
@@ -203,14 +194,11 @@ public class HandlerMessage {
      * @param userId      Id текущего пользователя из Телеграмма
      * @param reg         Регулярное выражение для парсинга
      * @return Сообщение, готовое для отправки
-     * @throws IOException
-     * @throws URISyntaxException
      */
-    //todo не get.. Зачем исключения пробрасываются?
-    private SendMessage getSendMessageQuestionTypeSearch(String messageText, Message message, Long userId, String reg) throws IOException, URISyntaxException {
+    private SendMessage receiveSendMessageQuestionTypeSearch(String messageText, Message message, Long userId, String reg) {
         personCache.setNameAndDescription(messageText, userId, reg);
         personCache.setNewState(userId, BotState.SET_TYPE_SEARCH);
-        return senderMessage.getSendMessageQuestionTypeSearch(message);
+        return senderMessage.sendMessageQuestionTypeSearch(message);
     }
 
     /**
@@ -219,8 +207,8 @@ public class HandlerMessage {
      * @param message Объект входящего сообщения
      * @return Сообщение, готовое для отправки
      */
-    private SendMessage getSendMessageQuestionSex(Message message) { //todo не get..
+    private SendMessage receiveSendMessageQuestionSex(Message message) {
         personCache.addPersonCache(message.getChat().getId(), BotState.SET_SEX);
-        return senderMessage.getSendMessageQuestionSex(message);
+        return senderMessage.sendMessageQuestionSex(message);
     }
 }

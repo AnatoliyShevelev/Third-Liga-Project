@@ -1,14 +1,15 @@
 package ru.liga.tgbot.service;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import ru.liga.tgbot.config.HttpHeadersConfig;
+import ru.liga.tgbot.config.ProfileServiceConfig;
 import ru.liga.tgbot.config.RestTemplateConfig;
-import ru.liga.tgbot.model.PreReformText;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,17 +21,20 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @Service
-public class ProfileService { //todo разве это не адаптер для взаимодействия с сервером?
-    @Value("${translate.url}")
-    private String translateUrl; //todo лучше перенести в конфиг
-//    @Value("${profileToPicture.url}")
-//    private String profileToPictureUrl;
-    @Value("${path.image}") //todo лучше перенести в конфиг
-    private String filePath; //todo жестко задан путь в пропертях, из ресурсов можно достать проще - getResource()
+public class ProfileAdapterService {
+
+
+    @Autowired
+    private ProfileServiceConfig profileServiceConfig;
     @Autowired
     private RestTemplateConfig restTemplateConfig;
+
+    @Value("${path.image}")
+    private String filePath;
+    private static final Integer POSITION_X = 20;
+    private static final Integer POSITION_Y = 50;
 
     /**
      * Сервис вызова перевода текста на старославянский
@@ -39,12 +43,11 @@ public class ProfileService { //todo разве это не адаптер дл�
      * @return Переведенный текст на старославянский
      * @throws URISyntaxException
      */
-    public PreReformText translateToOldSlavonic(String text) throws URISyntaxException { //todo не используется?
-        HttpHeaders headers = getHttpHeaders();
-        URI url = new URI(translateUrl);
-        PreReformText objEmp = new PreReformText(text);
-        HttpEntity<PreReformText> requestEntity = new HttpEntity<>(objEmp, headers);
-        return restTemplateConfig.getRestTemplate().postForObject(url, requestEntity, PreReformText.class);
+    public String translateToOldSlavonic(String text) throws URISyntaxException {
+        HttpHeaders headers = new HttpHeadersConfig().settingHttpHeaders();
+        URI url = new URI(profileServiceConfig.getTranslateUrl());
+        HttpEntity<String> requestEntity = new HttpEntity<>(text, headers);
+        return restTemplateConfig.restTemplate().postForObject(url, requestEntity, String.class);
     }
 
     /**
@@ -54,13 +57,17 @@ public class ProfileService { //todo разве это не адаптер дл�
      * @throws URISyntaxException
      * @throws IOException
      */
-    //todo вышел довольно таки большой метод с магическими значениями
-    public ByteArrayOutputStream profileToPicture(String text) throws IOException { //todo исключение лучше обработать на месте
+    public ByteArrayOutputStream profileToPicture(String text) {
         File file = new File(filePath);
-        BufferedImage image = ImageIO.read(file);
+        BufferedImage image;
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException e) {
+            log.error("Ошибка чтения изображения" + e);
+            throw new RuntimeException(e);
+        }
         Graphics2D g2d = image.createGraphics();
         g2d.setFont(new Font("Old Standard TT", Font.BOLD, 15));
-
 
         int width = image.getWidth(); // ширина картинки
         int height = image.getHeight(); // высота картинки
@@ -94,16 +101,14 @@ public class ProfileService { //todo разве это не адаптер дл�
 //            }
 //        }
 
-
         Font font = g2d.getFont();
         FontMetrics metrics = g2d.getFontMetrics(font);
-
 
         List<String> lines = new ArrayList<>();
         String[] words = text.split("\\s+");
         String currentLine = "";
         for (String word : words) {
-            if (metrics.stringWidth(currentLine + " " + word) <= width - 20) {
+            if (metrics.stringWidth(currentLine + " " + word) <= width - POSITION_X) {
                 currentLine += " " + word;
             } else {
                 lines.add(currentLine.trim());
@@ -112,8 +117,8 @@ public class ProfileService { //todo разве это не адаптер дл�
         }
         lines.add(currentLine.trim());
 
-        int x = 20;
-        int y = 50;
+        int x = POSITION_X;
+        int y = POSITION_Y;
         for (String line : lines) {
             g2d.setColor(Color.BLACK);
             g2d.setFont(new Font("Old Standard TT", Font.BOLD, 15));
@@ -124,14 +129,12 @@ public class ProfileService { //todo разве это не адаптер дл�
         g2d.dispose(); // освобождение ресурсов Graphics2D
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(image, "jpg", byteArrayOutputStream);
+        try {
+            ImageIO.write(image, "jpg", byteArrayOutputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return byteArrayOutputStream;
-    }
-
-    private HttpHeaders getHttpHeaders() { //todo не get.. Дублирование метода, значит стоит вынести
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return headers;
     }
 }

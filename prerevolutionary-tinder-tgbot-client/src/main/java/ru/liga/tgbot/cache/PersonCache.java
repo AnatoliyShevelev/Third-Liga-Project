@@ -1,11 +1,11 @@
 package ru.liga.tgbot.cache;
 
 import lombok.Getter;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.liga.tgbot.dto.PersonDTO;
+import ru.liga.tgbot.dto.PersonDto;
 import ru.liga.tgbot.enums.BotState;
+import ru.liga.tgbot.mapper.PersonMapper;
 import ru.liga.tgbot.model.Person;
 import ru.liga.tgbot.enums.Sex;
 
@@ -14,11 +14,9 @@ import java.util.List;
 
 @Slf4j
 @Getter
-@ToString //todo это действительно нужно этому классу?
 @Component
 public class PersonCache {
-    //todo по всему классу наименование методов get/set, нужно переименовать, потому что пол логике это не getter и не setter
-    private List<Person> persons = new ArrayList<>(); //todo final?
+    private final List<Person> persons = new ArrayList<>();
 
     /**
      * Добавление нового Person в кеш
@@ -43,16 +41,9 @@ public class PersonCache {
      * @param userId    Id пользователя из телеграмма
      * @param personDTO DTO из ответа сервиса
      */
-    public void setPersonCache(Long userId, PersonDTO personDTO) {
-        //todo сделать маппер для таких целей - PersonDTO -> Person
+    public void fillPersonCache(Long userId, PersonDto personDTO) {
         Person person = getUsersCurrentPerson(userId);
-        person.setId(personDTO.getId());
-        person.setName(personDTO.getFullName());
-        person.setDescription(new StringBuilder(personDTO.getDescription()));
-        person.setSex(Sex.valueOf(personDTO.getGender()));
-        person.setTypeSearch(Sex.valueOf(personDTO.getGenderSearch()));
-        person.setBotState(BotState.PROFILE_DONE);
-        person.setPageCounter(1);
+        person = PersonMapper.fillPerson(person, personDTO);
         persons.add(person);
         log.info("Set to user: " + userId + " from PersonDTO " + person);
     }
@@ -70,12 +61,11 @@ public class PersonCache {
         for (int i = 0; i < params.length; i++) {
             if (i == 0) {
                 person.setName(params[0]);
-                person.setDescription(new StringBuilder());
             } else {
                 if (person.getDescription() == null) {
-                    person.setDescription(person.getDescription().append(params[i]));
+                    person.setDescription(person.getDescription() + params[i]);
                 } else {
-                    person.setDescription(person.getDescription().append(" ").append(params[i]));
+                    person.setDescription(person.getDescription() + " " + params[i]);
                 }
             }
         }

@@ -15,7 +15,7 @@ public enum Action {
     LIKE("Нравится"),
     MENU("Меню");
 
-    private String caption; //todo final?
+    private final String caption;
 
     Action(String caption) {
         this.caption = caption;

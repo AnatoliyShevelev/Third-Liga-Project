@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LikedPersonDTO { //todo обычно называют просто ..Dto, не капсом
-    private Long mainId;
-    private Long likedId;
+public class TextToPictureDto {
+    String text;
 }

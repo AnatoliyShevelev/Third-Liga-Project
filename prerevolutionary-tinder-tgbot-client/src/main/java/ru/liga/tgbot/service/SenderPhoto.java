@@ -1,7 +1,6 @@
 package ru.liga.tgbot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -9,8 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import ru.liga.tgbot.cache.PersonCache;
-import ru.liga.tgbot.dto.PersonDTO;
+import ru.liga.tgbot.dto.PersonDto;
 import ru.liga.tgbot.enums.Action;
 
 import java.io.ByteArrayInputStream;
@@ -22,13 +20,9 @@ import java.util.List;
 @Component
 public class SenderPhoto {
     @Autowired
-    private PersonCache personCache;
-    @Autowired
-    private ProfileService profileService;
+    private ProfileAdapterService profileAdapterService;
     @Autowired
     private ButtonsMaker buttonsMaker;
-    @Value("${path.image}")
-    private String filePath; //todo лучше перенести в конфиг, да и нужен ли он тут?
 
 
     /**
@@ -40,8 +34,7 @@ public class SenderPhoto {
      * @throws IOException
      * @throws URISyntaxException
      */
-    //todo не get.. Слишком далеко тянутся исключения стоит обработать на месте
-    public SendPhoto getMyProfile(Message message, String filePath) throws IOException, URISyntaxException {
+    public SendPhoto receiveMyProfile(Message message, String filePath) {
         List<List<InlineKeyboardButton>> buttons = buttonsMaker.createButtonsForGetMyProfile();
         InputFile inputFile = getInputFile(filePath);
         return SendPhoto.builder()
@@ -60,10 +53,9 @@ public class SenderPhoto {
      * @throws IOException
      * @throws URISyntaxException
      */
-    //todo не get.. Слишком далеко тянутся исключения стоит обработать на месте
-    public SendPhoto getProfile(Message message, PersonDTO personDTO) throws IOException, URISyntaxException {
+    public SendPhoto receiveProfile(Message message, PersonDto personDTO) {
         ReplyKeyboardMarkup keyboardMarkup = buttonsMaker.createButtonsForGetProfile();
-        InputFile inputFile = getInputFile(getProfileText(personDTO));
+        InputFile inputFile = getInputFile(findProfileText(personDTO));
         return SendPhoto.builder()
                 .chatId(message.getChatId().toString())
                 .photo(inputFile)
@@ -76,13 +68,15 @@ public class SenderPhoto {
      *
      * @param text Текст, размещенный на картинке
      * @return готовый профиль в виде картинки
-     * @throws URISyntaxException
-     * @throws IOException
      */
-    //todo не get.. Слишком далеко тянутся исключения стоит обработать на месте
-    private InputFile getInputFile(String text) throws URISyntaxException, IOException {
-        //PreReformText preReformText = profileService.translateToOldSlavonic(text);
-        ByteArrayOutputStream byteArrayOutputStream = profileService.profileToPicture(/*preReformText.getText()*/text);
+    private InputFile getInputFile(String text) {
+        String afterTranslateText;
+        try {
+            afterTranslateText = profileAdapterService.translateToOldSlavonic(text);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        ByteArrayOutputStream byteArrayOutputStream = profileAdapterService.profileToPicture(afterTranslateText);
         return new InputFile(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()), "profile");
     }
 
@@ -92,7 +86,7 @@ public class SenderPhoto {
      * @param personDTO Профиль
      * @return готовый текст для профиля
      */
-    private String getProfileText(PersonDTO personDTO) {//todo не get..
+    private String findProfileText(PersonDto personDTO) {
         if (personDTO.getStatus() != null) {
             return personDTO.getFullName() + " - " + Action.valueOf(personDTO.getStatus()).getCaption() + "\n" + personDTO.getDescription();
         } else {
