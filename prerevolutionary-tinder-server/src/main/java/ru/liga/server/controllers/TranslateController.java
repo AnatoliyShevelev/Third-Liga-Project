@@ -73,7 +73,7 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Данные пользователя
      */
     @GetMapping("/{personId}/suitable")
-    public ResponseEntity<Person> findSuitablePerson(@PathVariable Long personId, Pageable pageable) {
+    public ResponseEntity<Person> findSuitablePerson(@PathVariable Long personId, Pageable pageable) {//DONE todo Pageable
         Person person = personService.findSuitablePerson(personId, pageable);
         if (person != null) {
             return new ResponseEntity<>(person, HttpStatus.OK);
