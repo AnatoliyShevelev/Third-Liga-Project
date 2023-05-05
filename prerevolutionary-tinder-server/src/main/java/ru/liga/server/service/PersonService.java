@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.liga.server.dto.PersonDto;
-import ru.liga.server.dto.PersonMapper;
+import ru.liga.server.dto.PersonConstruction;
 import ru.liga.server.model.Person;
 import ru.liga.server.repository.PersonRepository;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class PersonService {
 
     private final PersonRepository personRepository;
-    private final PersonMapper personMapper;
+    private final PersonConstruction personConstruction;
 
     /**
      * Поиск данных всех пользователей
@@ -117,7 +117,7 @@ public class PersonService {
         //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
         Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
         Person mainPerson = personRepository.findByPersonId(personId);
-        return personMapper.createModelList(personRepository.findLikedPersons(personId, pageable).getContent(), mainPerson.getId());
+        return personConstruction.createModelList(personRepository.findLikedPersons(personId, pageable).getContent(), mainPerson.getId());
     }
 
     /**
@@ -133,7 +133,7 @@ public class PersonService {
         Pageable pageable = PageRequest.of(page - 1, 1, Sort.by("id").ascending());
         Page<Person> statePage = personRepository.findLikedPersons(personId, pageable);
         Person mainPerson = personRepository.findByPersonId(personId);
-        return personMapper.createModel(statePage.getContent().get(0), mainPerson.getId());
+        return personConstruction.createModel(statePage.getContent().get(0), mainPerson.getId());
     }
 
     /**
