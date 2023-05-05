@@ -12,6 +12,7 @@ import ru.liga.server.dto.PersonConstruction;
 import ru.liga.server.model.Person;
 import ru.liga.server.repository.PersonRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -66,30 +67,50 @@ public class PersonService {
      * @param personId Идентификатор текущего пользователя
      * @return Список данных пользователей
      */
-    public List<Person> findAllSuitablePersons(Long personId) {
+//    public List<Person> findAllSuitablePersons(Long personId) {
+//        int count = this.findSuitablePersonsCount(personId);
+//        //DONE todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
+//        Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
+//        return personRepository.findSuitablePersons(personId, pageable).getContent();
+//    }
+
+    public List<Person> findAllSuitablePersons(Long personId, Pageable pageable) {
         int count = this.findSuitablePersonsCount(personId);
-        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
-        Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
+        if (count == 0) {
+            return Collections.emptyList();
+        }
         return personRepository.findSuitablePersons(personId, pageable).getContent();
     }
+
 
     /**
      * Поиск данных пользователя подходящего под критерии поиска
      * Список полходящих пользователей разивается на "страницы" (одна запись = одна страница)
      *
      * @param personId Идентификатор текущего пользователя
-     * @param page     Порядковый номер пользователя
+     * @param pageable     Порядковый номер пользователя
      * @return Данные пользователя
      */
-    public Person findSuitablePerson(Long personId, int page) {
-        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
-        Pageable pageable = PageRequest.of(page - 1, 1, Sort.by("id").ascending());
+
+//    public Person findSuitablePerson(Long personId, int page) {
+//        //DONE todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
+//        Pageable pageable = PageRequest.of(page - 1, 1, Sort.by("id").ascending());
+//        Page<Person> statePage = personRepository.findSuitablePersons(personId, pageable);
+//        Person person = statePage.getContent().get(0);
+//
+//        log.info("Suitable person № {}: {}", page, person);
+//
+//        return person;
+//    }
+    public Person findSuitablePerson(Long personId, Pageable pageable) {
         Page<Person> statePage = personRepository.findSuitablePersons(personId, pageable);
-        Person person = statePage.getContent().get(0);
-
-        log.info("Suitable person № {}: {}", page, person);
-
-        return person;
+        if (statePage.hasContent()) {
+            Person person = statePage.getContent().get(0);
+            log.info("Suitable person № {}: {}", pageable.getPageNumber() + 1, person);
+            return person;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -112,10 +133,15 @@ public class PersonService {
      * @param personId Идентификатор пользователя
      * @return Список пользователей
      */
-    public List<PersonDto> findAllFavoritePersons(Long personId) {
-        int count = this.findFavoritePersonsCount(personId);
-        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
-        Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
+//    public List<PersonDto> findAllFavoritePersons(Long personId) {
+//        int count = this.findFavoritePersonsCount(personId);
+//        //DONE todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
+//        Pageable pageable = PageRequest.ofSize(count > 0 ? count : 1).withSort(Sort.by("id").ascending());
+//        Person mainPerson = personRepository.findByPersonId(personId);
+//        return personConstruction.createModelList(personRepository.findLikedPersons(personId, pageable).getContent(), mainPerson.getId());
+//    }
+
+    public List<PersonDto> findAllFavoritePersons(Long personId, Pageable pageable) {
         Person mainPerson = personRepository.findByPersonId(personId);
         return personConstruction.createModelList(personRepository.findLikedPersons(personId, pageable).getContent(), mainPerson.getId());
     }
@@ -125,19 +151,25 @@ public class PersonService {
      * Список "любимых" пользователей разивается на "страницы" (одна запись = одна страница)
      *
      * @param personId Идентификатор текущего пользователя
-     * @param page     Порядковый номер пользователя
+     * @param pageable     Порядковый номер пользователя
      * @return Данные пользователя
      */
-    public PersonDto findFavoritePerson(Long personId, int page) {
-        //todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
-        Pageable pageable = PageRequest.of(page - 1, 1, Sort.by("id").ascending());
+//    public PersonDto findFavoritePerson(Long personId, int page) {
+//        //DONE todo чтобы не делать этих странных действий, в эндпоинте принимай готовый Pageable
+//        Pageable pageable = PageRequest.of(page - 1, 1, Sort.by("id").ascending());
+//        Page<Person> statePage = personRepository.findLikedPersons(personId, pageable);
+//        Person mainPerson = personRepository.findByPersonId(personId);
+//        return personConstruction.createModel(statePage.getContent().get(0), mainPerson.getId());
+//    }
+
+    public PersonDto findFavoritePerson(Long personId, Pageable pageable) {
         Page<Person> statePage = personRepository.findLikedPersons(personId, pageable);
         Person mainPerson = personRepository.findByPersonId(personId);
         return personConstruction.createModel(statePage.getContent().get(0), mainPerson.getId());
     }
 
     /**
-     * Получить количествщ "любимых" пользователей
+     * Получить количество "любимых" пользователей
      *
      * @param personId Идентификатор текущего пользователя
      * @return Количество польщователей

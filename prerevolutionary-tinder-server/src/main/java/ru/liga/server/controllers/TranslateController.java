@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.liga.server.dto.PersonDto;
 import ru.liga.server.model.Person;
 import ru.liga.server.service.PersonService;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -59,8 +60,8 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Список данных пользователей
      */
     @GetMapping("/{personId}/suitable")
-    public ResponseEntity<List<Person>> findAllSuitablePersons(@PathVariable Long personId) {
-        List<Person> persons = personService.findAllSuitablePersons(personId);
+    public ResponseEntity<List<Person>> findAllSuitablePersons(@PathVariable Long personId, Pageable pageable) {
+        List<Person> persons = personService.findAllSuitablePersons(personId, pageable);
         return ResponseEntity.ok(persons);
     }
     /**
@@ -68,12 +69,12 @@ public class TranslateController { //DONE todo в наименовании мо�
      * Список полходящих пользователей разивается на "страницы" (одна запись = одна страница)
      *
      * @param personId Идентификатор текущего пользователя
-     * @param page     Порядковый номер пользователя
+     * @param pageable Порядковый номер пользователя
      * @return Данные пользователя
      */
-    @GetMapping("/{personId}/suitable/{page}")
-    public ResponseEntity<Person> findSuitablePerson(@PathVariable Long personId, @PathVariable int page) {
-        Person person = personService.findSuitablePerson(personId, page);
+    @GetMapping("/{personId}/suitable")
+    public ResponseEntity<Person> findSuitablePerson(@PathVariable Long personId, Pageable pageable) {
+        Person person = personService.findSuitablePerson(personId, pageable);
         if (person != null) {
             return new ResponseEntity<>(person, HttpStatus.OK);
         } else {
@@ -100,8 +101,8 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Список пользователей
      */
     @GetMapping("/{personId}/favorite")
-    public ResponseEntity<List<PersonDto>> findAllFavoritePersons(@PathVariable Long personId) {
-        List<PersonDto> persons = personService.findAllFavoritePersons(personId);
+    public ResponseEntity<List<PersonDto>> findAllFavoritePersons(@PathVariable Long personId, Pageable pageable) {
+        List<PersonDto> persons = personService.findAllFavoritePersons(personId, pageable);
         return ResponseEntity.ok(persons);
     }
 
@@ -110,12 +111,12 @@ public class TranslateController { //DONE todo в наименовании мо�
      * Список "любимых" пользователей разивается на "страницы" (одна запись = одна страница)
      *
      * @param personId Идентификатор текущего пользователя
-     * @param page     Порядковый номер пользователя
+     * @param pageable Порядковый номер пользователя
      * @return Данные пользователя
      */
-    @GetMapping("/{personId}/favorite/{page}")
-    public ResponseEntity<PersonDto> findFavoritePerson(@PathVariable Long personId, @PathVariable int page) {
-        PersonDto person = personService.findFavoritePerson(personId, page);
+    @GetMapping("/{personId}/favorite")
+    public ResponseEntity<PersonDto> findFavoritePerson(@PathVariable Long personId, Pageable pageable) {
+        PersonDto person = personService.findFavoritePerson(personId, pageable);
         return ResponseEntity.ok(person);
     }
 
