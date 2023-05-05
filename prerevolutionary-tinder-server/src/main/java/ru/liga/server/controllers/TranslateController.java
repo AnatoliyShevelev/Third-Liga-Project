@@ -2,11 +2,11 @@ package ru.liga.server.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.liga.server.dto.PersonDto;
 import ru.liga.server.model.Person;
 import ru.liga.server.service.PersonService;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/persons")
 @RequiredArgsConstructor
 public class TranslateController { //DONE todo в наименовании можно не указывать Rest если других нет - TranslateController
-    //todo относится ко всем эндпоинтам - стоит возвращать ResponseEntity<>
+    //DONE todo относится ко всем эндпоинтам - стоит возвращать ResponseEntity<>
     private final PersonService personService;
 
     /**
@@ -23,9 +23,9 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Список данных пользователей
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<Person> findAllPersons() {
-        return personService.findAll();
+    public ResponseEntity<List<Person>> findAllPersons() {
+        List<Person> persons = personService.findAll();
+        return ResponseEntity.ok(persons);
     }
 
     /**
@@ -35,9 +35,9 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Данные пользователя
      */
     @GetMapping("/{personId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Person findPerson(@PathVariable Long personId) {
-        return personService.findByPersonId(personId);
+    public ResponseEntity<Person> findPerson(@PathVariable Long personId) {
+        Person person = personService.findByPersonId(personId);
+        return ResponseEntity.ok(person);
     }
 
     /**
@@ -45,10 +45,11 @@ public class TranslateController { //DONE todo в наименовании мо�
      *
      * @param person Данные пользователя
      */
+
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public void updatePerson(@RequestBody Person person) {//todo после update обычно возвращают обновлённую сущность
+    public ResponseEntity<Void> savePerson(@RequestBody Person person) {//DONE todo после update обычно возвращают обновлённую сущность
         personService.personSave(person);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -58,11 +59,10 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Список данных пользователей
      */
     @GetMapping("/{personId}/suitable")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Person> findAllSuitablePersons(@PathVariable Long personId) {
-        return personService.findAllSuitablePersons(personId);
+    public ResponseEntity<List<Person>> findAllSuitablePersons(@PathVariable Long personId) {
+        List<Person> persons = personService.findAllSuitablePersons(personId);
+        return ResponseEntity.ok(persons);
     }
-
     /**
      * Запрос данных пользователя подходящего под критерии поиска
      * Список полходящих пользователей разивается на "страницы" (одна запись = одна страница)
@@ -72,9 +72,13 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Данные пользователя
      */
     @GetMapping("/{personId}/suitable/{page}")
-    @ResponseStatus(HttpStatus.OK)
-    public Person findSuitablePerson(@PathVariable Long personId, @PathVariable int page) { //todo Pageable
-        return personService.findSuitablePerson(personId, page);
+    public ResponseEntity<Person> findSuitablePerson(@PathVariable Long personId, @PathVariable int page) {
+        Person person = personService.findSuitablePerson(personId, page);
+        if (person != null) {
+            return new ResponseEntity<>(person, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -84,9 +88,9 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Количество польщователей
      */
     @GetMapping("/{personId}/suitable/count")
-    @ResponseStatus(HttpStatus.OK)
-    public int findSuitablePersonsCount(@PathVariable Long personId) { //DONE todo наименование get подходит только для getters
-        return personService.findSuitablePersonsCount(personId);
+    public ResponseEntity<Integer> findSuitablePersonsCount(@PathVariable Long personId) {
+        int count = personService.findSuitablePersonsCount(personId);
+        return ResponseEntity.ok(count);
     }
 
     /**
@@ -96,9 +100,9 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Список пользователей
      */
     @GetMapping("/{personId}/favorite")
-    @ResponseStatus(HttpStatus.OK)
-    public List<PersonDto> findAllFavoritePersons(@PathVariable Long personId) {
-        return personService.findAllFavoritePersons(personId);
+    public ResponseEntity<List<PersonDto>> findAllFavoritePersons(@PathVariable Long personId) {
+        List<PersonDto> persons = personService.findAllFavoritePersons(personId);
+        return ResponseEntity.ok(persons);
     }
 
     /**
@@ -110,9 +114,9 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Данные пользователя
      */
     @GetMapping("/{personId}/favorite/{page}")
-    @ResponseStatus(HttpStatus.OK)
-    public PersonDto findFavoritePerson(@PathVariable Long personId, @PathVariable int page) {
-        return personService.findFavoritePerson(personId, page);
+    public ResponseEntity<PersonDto> findFavoritePerson(@PathVariable Long personId, @PathVariable int page) {
+        PersonDto person = personService.findFavoritePerson(personId, page);
+        return ResponseEntity.ok(person);
     }
 
     /**
@@ -121,12 +125,12 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @param personId Идентификатор текущего пользователя
      * @return Количество польщователей
      */
-    @GetMapping("/{personId}/favorite/count")
-    @ResponseStatus(HttpStatus.OK)
-    public int findFavoritePersonsCount(@PathVariable Long personId) { //DONE todo наименование get подходит только для getters
-        return personService.findFavoritePersonsCount(personId);
-    }
 
+    @GetMapping("/{personId}/favorite/count")
+    public ResponseEntity<Integer> findFavoritePersonsCount(@PathVariable Long personId) {//DONE todo наименование get подходит только для getters
+        int count = personService.findFavoritePersonsCount(personId);
+        return ResponseEntity.ok(count);
+    }
     /**
      * Запрос создания нового пользователя
      *
@@ -134,8 +138,9 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Данные пользователя
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Person createPerson(@RequestBody Person person) {
-        return personService.createPerson(person);
+    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
+        Person createdPerson = personService.createPerson(person);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPerson);
     }
+
 }
