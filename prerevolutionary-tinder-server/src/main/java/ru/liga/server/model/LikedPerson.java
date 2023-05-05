@@ -14,7 +14,9 @@ import javax.persistence.*;
 @Setter
 @RequiredArgsConstructor
 @Table(name = "liked_person")
-public class LikedPerson { //todo вместо отдельной сущности стоит сделать связь ManyToMany
+public class LikedPerson {
+    // ниже вопрос todo вместо отдельной сущности стоит сделать связь ManyToMany
+    //не понял что нужно сделать: нужно сделать связь многие ко многим внутри этого класса или связать его с классом Person по этому принципу?
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
