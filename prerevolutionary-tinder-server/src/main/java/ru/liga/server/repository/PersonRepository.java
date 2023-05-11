@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import ru.liga.server.model.Person;
 
 public interface PersonRepository extends JpaRepository<Person, Long> {
-    Person findByPersonId(Long personId);
+    Person findByPersonId(Long personId); //todo стоит обернуть в Optional<>
 
     @Query("select distinct p1 " +
             "from Person p1, Person p2 " +
@@ -23,7 +23,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
             "and (p1.gender = p2.genderSearch or (p2.genderSearch = 'ALL' and p1.gender in ('MALE', 'FEMALE'))) " +
             "and (p1.personId <> ?1 or p1.personId is null) " +
             "and p2.personId = ?1")
-    int getSuitablePersonsCount(Long personId);
+    int getSuitablePersonsCount(Long personId); //todo просьба везде наименования проверить, долой get)
 
     @Query("select distinct p " +
             "from Person p, Person pm, LikedPerson lp1, LikedPerson lp2 " +

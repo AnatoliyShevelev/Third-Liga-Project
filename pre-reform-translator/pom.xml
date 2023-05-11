@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<!--            todo лучше указывать версии в properties и ссылаться на них-->
+			<!--            todo лучше указывать версии в properties и ссылаться на них. В клиенте сделано отлично-->
 			<version>2.7.0</version>
 		</dependency>
 	</dependencies>

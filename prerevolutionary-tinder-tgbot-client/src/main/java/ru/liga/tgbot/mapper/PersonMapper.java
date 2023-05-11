@@ -13,7 +13,9 @@ public class PersonMapper {
      * @param personDTO данные для заполнения
      * @return заполненный объект
      */
-    public static Person fillPerson(Person person, PersonDto personDTO) {
+    //todo проблемный метод, изменяешь объект из параметра, после возвращаешь его, хотя он уже изменён. Нужно либо новый Person создавать, либо ничего не возвращать.
+    //todo дозаполнение мало похоже на маппинг
+    public static Person fillPerson(Person person, PersonDto personDTO) { //todo убрать static
         person.setId(personDTO.getId());
         person.setName(personDTO.getFullName());
         person.setDescription(personDTO.getDescription());
@@ -30,7 +32,7 @@ public class PersonMapper {
      * @param person заполняемый объект
      * @return заполненный объект
      */
-    public static PersonDto fillPersonDto(Person person) {
+    public static PersonDto fillPersonDto(Person person) { //todo убрать static
         PersonDto personDTO = new PersonDto();
         personDTO.setId(person.getId());
         personDTO.setGender(person.getSex().toString());

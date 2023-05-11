@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 @Component
 public class HandlerMessage {
 
-    @Autowired
+    @Autowired  //todo лучше использовать @RequiredArgsConstructor и сделать поле final, это относится и к след полям
     private PersonCache personCache;
     @Autowired
     private SenderPhoto senderPhoto;

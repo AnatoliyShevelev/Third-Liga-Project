@@ -22,8 +22,9 @@ public class LikedPersonController {
      * @return Данные о связи пользователей
      */
     @PostMapping
-    public ResponseEntity<LikedPerson> likePerson(@RequestBody LikedPerson likedPerson) {//DONE todo стоит возвращать ResponseEntity<>
+    public ResponseEntity<LikedPerson> likePerson(@RequestBody LikedPerson likedPerson) {
         Optional<LikedPerson> createdLikedPerson = likedPersonService.likePerson(likedPerson);
-        return createdLikedPerson.map(person -> new ResponseEntity<>(person, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+        return createdLikedPerson.map(person -> new ResponseEntity<>(person, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

@@ -15,7 +15,8 @@ import java.util.List;
 @Slf4j
 @Getter
 @Component
-public class PersonCache {
+public class PersonCache { //todo кэш не разделён, как обговаривали на разные типы данных
+    //todo в наименованиях остались get/set
     private final List<Person> persons = new ArrayList<>();
 
     /**

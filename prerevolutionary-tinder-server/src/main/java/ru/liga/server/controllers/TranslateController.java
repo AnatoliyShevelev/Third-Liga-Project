@@ -14,8 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/persons")
 @RequiredArgsConstructor
-public class TranslateController { //DONE todo в наименовании можно не указывать Rest если других нет - TranslateController
-    //DONE todo относится ко всем эндпоинтам - стоит возвращать ResponseEntity<>
+public class TranslateController {
     private final PersonService personService;
 
     /**
@@ -48,6 +47,7 @@ public class TranslateController { //DONE todo в наименовании мо�
      */
 
     @PutMapping
+    //todo done?? Void это не обновлённая сущность, нужно вернуть Person
     public ResponseEntity<Void> savePerson(@RequestBody Person person) {//DONE todo после update обычно возвращают обновлённую сущность
         personService.personSave(person);
         return ResponseEntity.ok().build();
@@ -73,7 +73,7 @@ public class TranslateController { //DONE todo в наименовании мо�
      * @return Данные пользователя
      */
     @GetMapping("/{personId}/suitable")
-    public ResponseEntity<Person> findSuitablePerson(@PathVariable Long personId, Pageable pageable) {//DONE todo Pageable
+    public ResponseEntity<Person> findSuitablePerson(@PathVariable Long personId, Pageable pageable) {
         Person person = personService.findSuitablePerson(personId, pageable);
         if (person != null) {
             return new ResponseEntity<>(person, HttpStatus.OK);

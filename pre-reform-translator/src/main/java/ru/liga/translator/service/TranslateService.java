@@ -8,17 +8,9 @@ import static ru.liga.translator.translation_rules.TranslationRulesMap.FITA_RULE
 import static ru.liga.translator.translation_rules.TranslationRulesMap.YAT_RULE;
 
 @Service
-public class TranslateService {
+public class TranslateService { //todo где тесты..?
 
-    // public String translate(String text) { //DONE todo стоит сделать 4 метода замены и вызывать поочерёдно
-    //  final String[] result = {text}; //DONE todo я понимаю, что идея ругалась, но этот вариант выглядит костыльно)
-    //  I_RULE.keySet().forEach((key) -> result[0] = result[0].replaceAll(key, I_RULE.get(key)));
-    //  ER_RULE.keySet().forEach((key) -> result[0] = result[0].replaceAll(key, ER_RULE.get(key)));
-    //  FITA_RULE.keySet().forEach((key) -> result[0] = result[0].replaceAll(key, FITA_RULE.get(key)));
-    // YAT_RULE.keySet().forEach((key) -> result[0] = result[0].replaceAll(key, YAT_RULE.get(key)));
-    //  return result[0];
-
-    public String translate(String text) {
+    public String translate(String text) { //todo переделать в return replaceWithIRule(replaceWithERRule(re... text);
         text = replaceWithIRule(text);
         text = replaceWithERRule(text);
         text = replaceWithFitaRule(text);

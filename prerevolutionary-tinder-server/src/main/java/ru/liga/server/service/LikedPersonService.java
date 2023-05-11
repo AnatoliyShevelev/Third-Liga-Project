@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LikedPersonService {
+public class LikedPersonService { //todo где тесты..?
     private final LikedPersonRepository likedPersonRepository;
     private final PersonRepository personRepository;
 

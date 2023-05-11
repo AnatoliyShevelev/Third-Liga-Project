@@ -19,7 +19,7 @@
         <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.16</org.projectlombok.version>
     </properties>
-
+<!--todo здесь были todo, они убраны и соответственно не выполнены, нужно вернуть и сделать. В клиенте сделано отлично-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

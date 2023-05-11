@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Slf4j
 @Service
-public class ProfileAdapterService {
+public class ProfileAdapterService { //todo где тесты..?
 
 
-    @Autowired
+    @Autowired  //todo лучше использовать @RequiredArgsConstructor и сделать поле final, это относится и к след полям
     private ProfileServiceConfig profileServiceConfig;
     @Autowired
     private RestTemplateConfig restTemplateConfig;

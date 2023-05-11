@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 @Slf4j
 @Component
 public class HandlerCallback {
-    @Autowired
+    @Autowired //todo лучше использовать @RequiredArgsConstructor и сделать поле final, это относится и к след полям
     private PersonCache personCache;
     @Autowired
     private PersonAdapterService personAdapterService;

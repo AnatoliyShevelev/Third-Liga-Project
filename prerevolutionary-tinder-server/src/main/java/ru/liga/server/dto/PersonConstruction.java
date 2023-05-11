@@ -1,4 +1,4 @@
-package ru.liga.server.dto; //DONE убран маппер todo мапперы в dto? Нужно держать в отдельном пакете - mapper
+package ru.liga.server.dto; //todo service в пакете dto?
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +14,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PersonConstruction { //DONE текущая модель работает, считаю нужным оставить, изменив наименование сущности
-    // todo предполагается, что в маппер содержит методы для маппинга entity to dto и обратно,
-    // todo сейчас же тут создание модели, списка и определение статуса.. стоит переделать
-
+public class PersonConstruction {
     private final LikedPersonRepository likedPersonRepository;
 
     /**
@@ -66,7 +63,7 @@ public class PersonConstruction { //DONE текущая модель работ�
      * @param likedPersonId Идентификатор связанного пользователя
      * @return Статус связи между пользователями
      */
-    private String showLikedPersonStatus(Long mainPersonId, Long likedPersonId) { //DONE todo не get
+    private String showLikedPersonStatus(Long mainPersonId, Long likedPersonId) {
         Optional<LikedPerson> likePerson = likedPersonRepository.findByMainIdAndLikedId(mainPersonId, likedPersonId);
         Optional<LikedPerson> likedMePerson = likedPersonRepository.findByMainIdAndLikedId(likedPersonId, mainPersonId);
 

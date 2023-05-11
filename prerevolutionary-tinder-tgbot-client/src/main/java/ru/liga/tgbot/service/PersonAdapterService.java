@@ -16,8 +16,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Service
-public class PersonAdapterService {
-    @Autowired
+public class PersonAdapterService { //todo где тесты..?
+    @Autowired  //todo лучше использовать @RequiredArgsConstructor и сделать поле final, это относится и к след полям
     private PersonServiceConfig personServiceConfig;
     @Autowired
     private RestTemplateConfig restTemplateConfig;
@@ -29,7 +29,7 @@ public class PersonAdapterService {
      * @return созданная запись
      * @throws URISyntaxException
      */
-    public PersonDto createPerson(Person person) throws URISyntaxException {
+    public PersonDto createPerson(Person person) throws URISyntaxException { //todo не используется..?
         HttpHeaders headers = new HttpHeadersConfig().settingHttpHeaders();
         URI url = new URI(personServiceConfig.getPersonsUrl());
         PersonDto objEmp = PersonMapper.fillPersonDto(person);

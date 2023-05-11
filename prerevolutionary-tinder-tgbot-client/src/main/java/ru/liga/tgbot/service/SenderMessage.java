@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public class SenderMessage {
-    @Autowired
+    @Autowired  //todo лучше использовать @RequiredArgsConstructor и сделать поле final, это относится и к след полям
     private ButtonsMaker buttonsMaker;
 
     /**

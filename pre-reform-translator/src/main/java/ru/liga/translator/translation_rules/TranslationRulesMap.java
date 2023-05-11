@@ -1,12 +1,14 @@
-package ru.liga.translator.translation_rules;
+package ru.liga.translator.translation_rules; //todo в названиях пакетов обычно не используют _
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TranslationRulesMap {
-    public static final Map<String, String> I_RULE = new HashMap<>(); //DONE todo стоит сделать через регулярное выражение
-    public static final Map<String, String> ER_RULE = new HashMap<>(); //DONE todo стоит сделать через регулярное выражение
+    public static final Map<String, String> I_RULE = new HashMap<>();
+    public static final Map<String, String> ER_RULE = new HashMap<>();
+    //todo сделать в файле, если не cvs, то хотя бы txt
     public static final Map<String, String> FITA_RULE = new HashMap<>(); //в csv файле, через который хотел читать, не отображаются символы ѳ, поэтому оставил так todo данный набор лучше хранить в файле
+    //todo сделать в файле, если не cvs, то хотя бы txt
     public static final Map<String, String> YAT_RULE = new HashMap<>(); //в csv файле, через который хотел читать, не отображаются символы ѳ, поэтому оставил так todo данный набор лучше хранить в файле
 
 

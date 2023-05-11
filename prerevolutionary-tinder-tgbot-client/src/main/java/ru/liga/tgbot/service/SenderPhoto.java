@@ -19,7 +19,7 @@ import java.util.List;
 
 @Component
 public class SenderPhoto {
-    @Autowired
+    @Autowired  //todo лучше использовать @RequiredArgsConstructor и сделать поле final, это относится и к след полям
     private ProfileAdapterService profileAdapterService;
     @Autowired
     private ButtonsMaker buttonsMaker;

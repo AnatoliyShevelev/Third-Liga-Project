@@ -13,7 +13,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @Component
 public class BotInitializer {
 
-    @Autowired
+    @Autowired  //todo лучше использовать @RequiredArgsConstructor и сделать поле final, это относится и к след полям
     private TelegramBot bot;
 
     @EventListener({ContextRefreshedEvent.class})
