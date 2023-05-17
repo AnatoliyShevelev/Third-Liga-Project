@@ -1,4 +1,4 @@
-package ru.liga.translator.translation_rules; //todo в названиях пакетов обычно не используют _
+package ru.liga.translator.translationrules; //DONE todo в названиях пакетов обычно не используют _
 
 import java.util.HashMap;
 import java.util.Map;

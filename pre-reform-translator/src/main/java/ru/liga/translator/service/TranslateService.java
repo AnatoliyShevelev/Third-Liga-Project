@@ -2,20 +2,16 @@ package ru.liga.translator.service;
 
 import org.springframework.stereotype.Service;
 
-import static ru.liga.translator.translation_rules.TranslationRulesMap.I_RULE;
-import static ru.liga.translator.translation_rules.TranslationRulesMap.ER_RULE;
-import static ru.liga.translator.translation_rules.TranslationRulesMap.FITA_RULE;
-import static ru.liga.translator.translation_rules.TranslationRulesMap.YAT_RULE;
+import static ru.liga.translator.translationrules.TranslationRulesMap.I_RULE;
+import static ru.liga.translator.translationrules.TranslationRulesMap.ER_RULE;
+import static ru.liga.translator.translationrules.TranslationRulesMap.FITA_RULE;
+import static ru.liga.translator.translationrules.TranslationRulesMap.YAT_RULE;
 
 @Service
 public class TranslateService { //todo где тесты..?
 
-    public String translate(String text) { //todo переделать в return replaceWithIRule(replaceWithERRule(re... text);
-        text = replaceWithIRule(text);
-        text = replaceWithERRule(text);
-        text = replaceWithFitaRule(text);
-        text = replaceWithYatRule(text);
-        return text;
+    public String translate(String text) {//DONE todo переделать в return replaceWithIRule(replaceWithERRule(re... text);
+        return replaceWithYatRule(replaceWithFitaRule(replaceWithERRule(replaceWithIRule(text))));
     }
 
     private String replaceWithIRule(String text) {
