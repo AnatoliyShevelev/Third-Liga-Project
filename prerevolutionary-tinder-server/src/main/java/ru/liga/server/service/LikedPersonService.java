@@ -21,8 +21,8 @@ public class LikedPersonService { //todo где тесты..?
      * @return Данные о связи пользователей
      */
     public Optional<LikedPerson> likePerson(LikedPerson likedPerson) {
-        Long mainId = personRepository.findByPersonId(likedPerson.getMainId()).getId();
-        Long likedId = personRepository.findByPersonId(likedPerson.getLikedId()).getId();
+        Long mainId = personRepository.findByPersonId(likedPerson.getMainId()).orElseThrow().getId();
+        Long likedId = personRepository.findByPersonId(likedPerson.getLikedId()).orElseThrow().getId();
 
         Optional<LikedPerson> likedPersonExists = likedPersonRepository.findByMainIdAndLikedId(mainId, likedId);
         if (likedPersonExists.isEmpty()) {

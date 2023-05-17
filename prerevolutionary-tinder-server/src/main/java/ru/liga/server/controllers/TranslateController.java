@@ -10,6 +10,7 @@ import ru.liga.server.service.PersonService;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
@@ -35,8 +36,8 @@ public class TranslateController {
      * @return Данные пользователя
      */
     @GetMapping("/{personId}")
-    public ResponseEntity<Person> findPerson(@PathVariable Long personId) {
-        Person person = personService.findByPersonId(personId);
+    public ResponseEntity<Optional<Person>> findPerson(@PathVariable Long personId) {
+        Optional<Person> person = personService.findByPersonId(personId);
         return ResponseEntity.ok(person);
     }
 

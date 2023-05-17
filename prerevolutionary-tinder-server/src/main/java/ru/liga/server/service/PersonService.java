@@ -3,17 +3,16 @@ package ru.liga.server.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.liga.server.dto.PersonDto;
-import ru.liga.server.dto.PersonConstruction;
+import ru.liga.server.constraction.PersonConstruction;
 import ru.liga.server.model.Person;
 import ru.liga.server.repository.PersonRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -58,7 +57,7 @@ public class PersonService { //todo где тесты..?
      * @param personId Идентификатор пользователя
      * @return Данные пользователя
      */
-    public Person findByPersonId(Long personId) {
+    public Optional<Person> findByPersonId(Long personId) {
         return personRepository.findByPersonId(personId);
     }
 
@@ -120,7 +119,7 @@ public class PersonService { //todo где тесты..?
      * @return Количество польщователей
      */
     public int findSuitablePersonsCount(Long personId) {
-        int count = personRepository.getSuitablePersonsCount(personId);
+        int count = personRepository.findSuitablePersonsCount(personId);
 
         log.info("Suitable persons count: {}", count);
 
@@ -141,8 +140,8 @@ public class PersonService { //todo где тесты..?
 //    }
 
     public List<PersonDto> findAllFavoritePersons(Long personId, Pageable pageable) { //todo необходимо возвращать список и инфу о странице
-        Person mainPerson = personRepository.findByPersonId(personId);
-        return personConstruction.createModelList(personRepository.findLikedPersons(personId, pageable).getContent(), mainPerson.getId());
+        Optional<Person> mainPerson = personRepository.findByPersonId(personId);
+        return personConstruction.createModelList(personRepository.findLikedPersons(personId, pageable).getContent(), mainPerson.get().getId());
     }
 
     /**
@@ -162,8 +161,8 @@ public class PersonService { //todo где тесты..?
 
     public PersonDto findFavoritePerson(Long personId, Pageable pageable) { //todo необходимо возвращать список и инфу о странице
         Page<Person> statePage = personRepository.findLikedPersons(personId, pageable);
-        Person mainPerson = personRepository.findByPersonId(personId);
-        return personConstruction.createModel(statePage.getContent().get(0), mainPerson.getId());
+        Optional<Person> mainPerson = personRepository.findByPersonId(personId);
+        return personConstruction.createModel(statePage.getContent().get(0), mainPerson.get().getId());
     }
 
     /**

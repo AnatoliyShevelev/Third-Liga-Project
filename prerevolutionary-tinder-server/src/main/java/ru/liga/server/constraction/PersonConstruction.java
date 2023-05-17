@@ -1,8 +1,9 @@
-package ru.liga.server.dto; //todo service в пакете dto?
+package ru.liga.server.constraction; //DONE todo service в пакете dto?
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.liga.server.dto.PersonDto;
 import ru.liga.server.model.LikedPerson;
 import ru.liga.server.model.Person;
 import ru.liga.server.repository.LikedPersonRepository;
