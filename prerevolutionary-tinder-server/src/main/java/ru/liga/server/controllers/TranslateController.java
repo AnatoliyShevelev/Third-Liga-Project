@@ -46,11 +46,10 @@ public class TranslateController {
      * @param person Данные пользователя
      */
 
-    @PutMapping
-    //todo done?? Void это не обновлённая сущность, нужно вернуть Person
-    public ResponseEntity<Void> savePerson(@RequestBody Person person) {//DONE todo после update обычно возвращают обновлённую сущность
-        personService.personSave(person);
-        return ResponseEntity.ok().build();
+
+    @PutMapping//DONE todo done?? Void это не обновлённая сущность, нужно вернуть Person
+    public Person savePerson(@RequestBody Person person) {//DONE todo после update обычно возвращают обновлённую сущность
+        return personService.personSave(person);
     }
 
     /**
@@ -128,7 +127,7 @@ public class TranslateController {
      */
 
     @GetMapping("/{personId}/favorite/count")
-    public ResponseEntity<Integer> findFavoritePersonsCount(@PathVariable Long personId) {//DONE todo наименование get подходит только для getters
+    public ResponseEntity<Integer> findFavoritePersonsCount(@PathVariable Long personId) {
         int count = personService.findFavoritePersonsCount(personId);
         return ResponseEntity.ok(count);
     }

@@ -37,8 +37,9 @@ public class PersonService { //todo где тесты..?
      *
      * @param person Данные пользователя
      */
-    public void personSave(Person person) { //todo метод save возвращает обновлённую сущность, сделай return
-        personRepository.save(person);
+
+    public Person personSave(Person person) {//DONE todo метод save возвращает обновлённую сущность, сделай return
+        return personRepository.save(person);
     }
 
     /**
